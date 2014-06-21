@@ -1,4 +1,4 @@
-package com.training.hbase;
+package com.tutorial.hbase;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

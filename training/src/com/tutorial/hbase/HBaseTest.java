@@ -1,4 +1,4 @@
-package com.training.hbase;
+package com.tutorial.hbase;
 
 import java.io.IOException;
 import java.util.ArrayList;
