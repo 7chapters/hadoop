@@ -1,6 +1,7 @@
 package com.tutorial.mapreduce.join;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -72,7 +73,7 @@ public class ReduceJoin {
 	
 		MultipleInputs.addInputPath(job, new Path(args[0]),TextInputFormat.class, CustsMapper.class);
 		MultipleInputs.addInputPath(job, new Path(args[1]),TextInputFormat.class, TxnsMapper.class);
-		Path outputPath = new Path(args[2]);
+		Path outputPath = new Path(args[2]+"/"+new Date());
 		
 		
 		FileOutputFormat.setOutputPath(job, outputPath);
