@@ -73,7 +73,7 @@ public class ReduceJoin {
 	
 		MultipleInputs.addInputPath(job, new Path(args[0]),TextInputFormat.class, CustsMapper.class);
 		MultipleInputs.addInputPath(job, new Path(args[1]),TextInputFormat.class, TxnsMapper.class);
-		Path outputPath = new Path(args[2]+"/"+new Date());
+		Path outputPath = new Path("\'"+args[2]);
 		
 		
 		FileOutputFormat.setOutputPath(job, outputPath);

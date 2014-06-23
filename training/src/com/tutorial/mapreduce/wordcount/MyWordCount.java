@@ -1,4 +1,4 @@
-package com.tutorial.mapreduce;
+package com.tutorial.mapreduce.wordcount;
 
 import java.io.IOException;
 import java.util.Date;

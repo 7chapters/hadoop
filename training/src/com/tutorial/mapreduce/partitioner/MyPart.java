@@ -1,4 +1,4 @@
-package com.tutorial.mapreduce;
+package com.tutorial.mapreduce.partitioner;
 
 import java.io.IOException;
 import java.util.Date;
