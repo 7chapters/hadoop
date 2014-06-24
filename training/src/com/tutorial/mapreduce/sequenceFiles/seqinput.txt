@@ -1,0 +1,11 @@
+/home/cloudera/git/hadoop/training/src/com/tutorial/mapreduce/sequenceFiles/images/auto_loan.png
+/home/cloudera/git/hadoop/training/src/com/tutorial/mapreduce/sequenceFiles/images/blur1.jpg
+/home/cloudera/git/hadoop/training/src/com/tutorial/mapreduce/sequenceFiles/images/credit_card_loan.bmp
+/home/cloudera/git/hadoop/training/src/com/tutorial/mapreduce/sequenceFiles/images/flower.jpg
+/home/cloudera/git/hadoop/training/src/com/tutorial/mapreduce/sequenceFiles/images/flower1.jpg
+/home/cloudera/git/hadoop/training/src/com/tutorial/mapreduce/sequenceFiles/images/flower2.jpg
+/home/cloudera/git/hadoop/training/src/com/tutorial/mapreduce/sequenceFiles/images/glow_blur.jpg
+/home/cloudera/git/hadoop/training/src/com/tutorial/mapreduce/sequenceFiles/images/home_loan.jpg
+/home/cloudera/git/hadoop/training/src/com/tutorial/mapreduce/sequenceFiles/images/personal_loan.gif
+/home/cloudera/git/hadoop/training/src/com/tutorial/mapreduce/sequenceFiles/images/sleigh.jpg
+/home/cloudera/git/hadoop/training/src/com/tutorial/mapreduce/sequenceFiles/images/threshold_blur.jpg
