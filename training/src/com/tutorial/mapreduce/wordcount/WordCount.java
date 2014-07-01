@@ -9,7 +9,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.JobConf;
-import org.apache.hadoop.mapred.Partitioner;
+import org.apache.hadoop.mapreduce.Partitioner;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -32,7 +32,7 @@ public class WordCount {
 		public void map(Object key, Text value,
 				Mapper<Object, Text, Text, IntWritable>.Context context)
 				throws IOException, InterruptedException {
-			System.out.println("============TokenizerMapper=******=map=====================");
+			System.out.println("============TokenizerMapper=******=map====================="+ key +"  "+ value.toString());
 			StringTokenizer itr = new StringTokenizer(value.toString());
 			while (itr.hasMoreTokens()) {
 				this.word.set(itr.nextToken());
@@ -61,23 +61,17 @@ public class WordCount {
 		
 	}
 	
-	static class MyPartitioner implements Partitioner<Text, IntWritable>{
+	static class MyPartitioner extends Partitioner<Text, IntWritable>{
 		@Override
 		public int getPartition(Text key, IntWritable value, int noOfPartitions) {
 			String myKey = key.toString().toLowerCase();
-			if(myKey.equals("warn")){
+			if(myKey.equals("package")){
 				return 0;
-			}else if(myKey.equals("2014")){
+			}else if(myKey.startsWith("IntWritable")){
 				return 1;
 			}else{
-				return 3;
+				return 2;
 			}
-		}
-
-		@Override
-		public void configure(JobConf paramJobConf) {
-			// TODO Auto-generated method stub
-			
 		}
 	}
 	
@@ -94,8 +88,7 @@ public class WordCount {
 		job.setJarByClass(WordCount.class);
 		
 		job.setNumReduceTasks(3);
-//		job.setPartitionerClass(MyPartitioner.class);
-		
+		job.setPartitionerClass(MyPartitioner.class);
 		job.setMapperClass(TokenizerMapper.class);
 		job.setCombinerClass(IntSumReducer.class);
 		job.setReducerClass(IntSumReducer.class);
