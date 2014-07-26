@@ -1,0 +1,7 @@
+1,green,190
+2,blue,300
+3,yellow,220
+4,blue,199
+5,green,199
+6,yellow,299
+7,green,799
