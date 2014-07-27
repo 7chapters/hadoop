@@ -1,0 +1,97 @@
+<workflow-app xmlns="uri:oozie:workflow:0.1" name="ReviewWorkflowRunner">
+	<start to="sqoop-node" />
+	<action name="start-review">
+		<java>
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<prepare>
+				<delete path="${outputDir}" />
+			</prepare>
+			<configuration>
+				<property>
+					<name>mapred.job.queue.name</name>
+					<value>${queueName}</value>
+				</property>
+			</configuration>
+			<main-class>com._7chapters.reviews.ImportReviewMain</main-class>
+			<arg>${inputDir}</arg>
+			<arg>${outputDir}</arg>
+		</java>
+		<ok to="pig-node" />
+		<error to="fail" />
+	</action>
+	<action name="pig-node">
+		<pig>
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<prepare>
+				<delete path="${pigCategoryOutputDir}" />
+				<delete path="${pigReviewDistinctOutputDir}" />
+			</prepare>
+			<configuration>
+				<property>
+					<name>mapred.job.queue.name</name>
+					<value>${queueName}</value>
+				</property>
+				<property>
+					<name>mapred.compress.map.output</name>
+					<value>true</value>
+				</property>
+				<property>
+					<name>oozie.action.external.stats.write</name>
+					<value>true</value>
+				</property>
+				<property>
+					<name>oozie.use.system.libpath</name>
+					<value>true</value>
+				</property>
+			</configuration>
+			<script>review.pig</script>
+			<param>INPUT=${pigInputDir}</param>
+			<param>pigCategoryOutputDir=${pigCategoryOutputDir}</param>
+			<param>pigReviewDistinctOutputDir=${pigReviewDistinctOutputDir}
+			</param>
+		</pig>
+		<ok to="hive-node" />
+		<error to="fail" />
+	</action>
+	<action name="hive-node">
+		<hive xmlns="uri:oozie:hive-action:0.2">
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<prepare>
+				<delete path="${hiveFinalReview}" />
+			</prepare>
+			<job-xml>hive-site.xml</job-xml>
+			<script>review.hql</script>
+			<param>hiveFinalReview=${hiveFinalReview}</param>
+		</hive>
+		<ok to="sqoop-node" />
+		<error to="fail" />
+	</action>
+	<action name="sqoop-node">
+		<sqoop xmlns="uri:oozie:sqoop-action:0.2">
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<configuration>
+				<property>
+					<name>mapred.job.queue.name</name>
+					<value>${queueName}</value>
+				</property>
+				 <property>
+                    <name>mapred.compress.map.output</name>
+                    <value>true</value>
+                </property>
+			</configuration>
+			<command>export --connect jdbc:oracle:thin:@192.168.245.1:1521:XE --username HR --password HR --table HR.REVIEW_FINAL --export-dir /user/cloudera/Review/hive/review_final --input-fields-terminated-by '\001'</command>
+		</sqoop>
+		<ok to="end" />
+		<error to="fail" />
+	</action>
+	<kill name="fail">
+		<message>Job failed, error
+			message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+	</kill>
+	<end name="end" />
+</workflow-app>
+
