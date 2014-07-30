@@ -5,22 +5,18 @@ import java.util.List;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.MapReduceBase;
-import org.apache.hadoop.mapred.Mapper;
-import org.apache.hadoop.mapred.OutputCollector;
-import org.apache.hadoop.mapred.Reporter;
+import org.apache.hadoop.mapreduce.Mapper;
 
 import com._7chapters.reviews.util.WordUtil;
 import com._7chapters.reviews.util.XMLParser;
 
-public class ImportReviewMapper extends MapReduceBase implements
+public class ImportReviewMapper extends
 		Mapper<LongWritable, Text, Text, Text> {
 	static String DELIMITER = ",";
 	@Override
 	public void map(LongWritable key, Text value,
-			OutputCollector<Text, Text> output, Reporter reporter)
-			throws IOException {
-
+			Mapper<LongWritable, Text, Text, Text>.Context context)
+			throws IOException, InterruptedException {
 		XMLParser parser;
 		try {
 			parser = new XMLParser(value.toString());
@@ -43,12 +39,11 @@ public class ImportReviewMapper extends MapReduceBase implements
 						+ parser.getHash() + DELIMITER + parser.getUrl()
 						+ DELIMITER + postive + DELIMITER + negative
 						+ DELIMITER + parser.getUsercount();
-				output.collect(new Text(""), new Text(mapOutput));
+				context.write(new Text(""), new Text(mapOutput));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("");
 		}
-
 	}
 }

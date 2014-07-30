@@ -1,5 +1,5 @@
 <workflow-app xmlns="uri:oozie:workflow:0.1" name="ReviewWorkflowRunner">
-	<start to="sqoop-node" />
+	<start to="start-review" />
 	<action name="start-review">
 		<java>
 			<job-tracker>${jobTracker}</job-tracker>
